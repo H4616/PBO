@@ -8,6 +8,12 @@ public class Keratan extends Bola implements Geometri{
         this.r2 = r2;
         this.tinggi = tinggi;
     }
+    
+    public Keratan() {
+        super();
+        r2 = 3;
+        tinggi = 5;
+    }
 
     @Override
     public double hitungLuas() {

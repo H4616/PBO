@@ -8,6 +8,11 @@ public class Juring extends Bola implements Geometri{
         this.r2 = r2;
     }
     
+    public Juring() {
+        super();
+        r2 = 2;
+    }
+    
     @Override
     public double hitungLuas() {
         luasp=getKeliling()+PHI*r2;

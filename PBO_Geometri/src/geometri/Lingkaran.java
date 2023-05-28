@@ -7,6 +7,10 @@ public class Lingkaran implements Geometri{
         jari = r;
     }
     
+    public Lingkaran(){
+        jari = 8;
+    }
+    
     // Encaptulation
     public void setJari(int r){
         jari = r;

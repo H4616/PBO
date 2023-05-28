@@ -7,6 +7,11 @@ public class Cincin extends Bola implements Geometri{
         super(r);
         this.r2 = r2;
     }
+    
+    public Cincin() {
+        super();
+        r2 = 3;
+    }
 
     public double getK() {
         k=r2-super.getJari();

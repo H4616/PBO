@@ -7,6 +7,11 @@ public class Tembereng extends Bola implements Geometri{
         super(r);
         this.tinggi = tinggi;
     }
+    
+    public Tembereng() {
+        super();
+        tinggi = 4;
+    }
 
     @Override
     public double hitungVolume() {

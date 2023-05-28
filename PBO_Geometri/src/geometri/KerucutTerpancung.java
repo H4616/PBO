@@ -8,6 +8,12 @@ public class KerucutTerpancung extends Kerucut implements Geometri{
         this.r2 = r2;
         this.b = b;
     }
+    
+    public KerucutTerpancung() {
+        super();
+        r2 = 3;
+        b = 4;
+    }
 
     public double getLuasa() {
         luasa=super.getLuas();
