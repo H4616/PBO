@@ -5,7 +5,7 @@ import java.io.RandomAccessFile;
 import static java.lang.Math.sqrt;
 
 public class Kerucut extends Lingkaran implements Geometri, Runnable {
-
+    Connector con = new Connector();
     private double tinggi, volume, luasp, sisimiring, selimut;
     private SharedFile sharedFile;
 
@@ -66,15 +66,15 @@ public class Kerucut extends Lingkaran implements Geometri, Runnable {
         hitungLuas();
         System.out.println("Volume kerucut dengan jari-jari " + super.getJari() + ", tinggi " + tinggi + " adalah " + volume);
         System.out.println("Luas permukaan kerucut dengan jari-jari " + super.getJari() + ", tinggi " + tinggi + ", dan sisi miring " + sisimiring + " adalah " + luasp);
-
+//        con.inputKerucut(super.getJari(), tinggi, luasp, volume);
         try {
-            RandomAccessFile file = new RandomAccessFile("kerucut.txt", "rw");
-
             // Menulis data ke file
-            sharedFile.writeData(super.getJari());
-            sharedFile.writeData(tinggi);
-            sharedFile.writeData(luasp);
-            sharedFile.writeData(volume);
+//            sharedFile.writeData(super.getJari());
+//            sharedFile.writeData(tinggi);
+//            sharedFile.writeData(luasp);
+//            sharedFile.writeData(volume);
+            sharedFile.writeData(super.getJari(), tinggi, luasp, volume);
+
 
             // Menutup file
         } catch (IOException e) {

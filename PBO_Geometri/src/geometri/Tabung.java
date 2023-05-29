@@ -5,6 +5,7 @@ import java.io.RandomAccessFile;
 
 public class Tabung extends Lingkaran implements Geometri, Runnable {
 
+    Connector con = new Connector();
     private double tinggi, volume, luasp;
     private SharedFile sharedFile;
 
@@ -13,6 +14,7 @@ public class Tabung extends Lingkaran implements Geometri, Runnable {
         this.tinggi = tinggi;
         this.sharedFile = sharedFile;
     }
+
     public Tabung(double tinggi, double r) {
         super(r);
         this.tinggi = tinggi;
@@ -23,7 +25,7 @@ public class Tabung extends Lingkaran implements Geometri, Runnable {
         tinggi = 10;
         this.sharedFile = sharedFile;
     }
-    
+
     public Tabung() {
         super();
         tinggi = 10;
@@ -48,15 +50,16 @@ public class Tabung extends Lingkaran implements Geometri, Runnable {
         hitungLuas();
         System.out.println("Volume tabung dengan jari-jari " + super.getJari() + " dan tinggi " + tinggi + " adalah " + volume);
         System.out.println("Luas permukaan tabung dengan jari-jari " + super.getJari() + " dan tinggi " + tinggi + " adalah " + luasp);
-
+//        con.inputTabung(super.getJari(), tinggi, volume, luasp);
         try {
-            RandomAccessFile file = new RandomAccessFile("tabung.txt", "rw");
-
             // Menulis data ke file
-            sharedFile.writeData(super.getJari());
-            sharedFile.writeData(tinggi);
-            sharedFile.writeData(luasp);
-            sharedFile.writeData(volume);
+//            synchronized (this) {
+//                sharedFile.writeData(super.getJari());
+//                sharedFile.writeData(tinggi);
+//                sharedFile.writeData(luasp);
+//                sharedFile.writeData(volume);
+            sharedFile.writeData(super.getJari(), tinggi, luasp, volume);
+//            }
 
             // Menutup file
         } catch (IOException e) {

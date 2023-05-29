@@ -5,80 +5,156 @@ import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class Main {
-
+    
     public static void main(String[] args) throws IOException {
+        Connector con=new Connector();
+        Scanner input = new Scanner(System.in);
+        System.out.println("==========");
+        System.out.println("Menu Utama");
+        System.out.println("==========");
+        System.out.println("1. Hitung Tabung");
+        System.out.println("2. Hitung Kerucut");
+        System.out.println("3. Hitung Bola");
+        System.out.print("Pilih: ");
+        int menu = input.nextInt();
+        if (menu == 1) {
+            System.out.println("=== TABUNG ===");
+            SharedFile sharedFile1 = new SharedFile("tabung.txt");
+            sharedFile1.clearFile();
 
-//        int jumlahTabung = 500;
-//        int jumlahKerucut = 500;
-//        int jumlahBola = 500;
-        SharedFile sharedFile1 = new SharedFile("tabung.txt");
-        sharedFile1.clearFile();
+            Thread[] threadTabung = new Thread[1000];
+            for (int i = 0; i < threadTabung.length; i++) {
+                int t = (int) Math.floor(Math.random() * (15) + 1);
+                int r = (int) Math.floor(Math.random() * (10) + 1);
 
-        Thread[] threadTabung = new Thread[334];
-        for (int i = 0; i < threadTabung.length; i++) {
-            int t = (int) Math.floor(Math.random() * (15) + 1);
-            int r = (int) Math.floor(Math.random() * (10) + 1);
-
-            Tabung tabung = new Tabung(t, r, sharedFile1);
-            threadTabung[i] = new Thread(tabung);
-            threadTabung[i].start();
-        }
-
-        SharedFile sharedFile2 = new SharedFile("bola.txt");
-        sharedFile2.clearFile();
-        Thread[] threadBola = new Thread[334];
-        for (int i = 0; i < threadBola.length; i++) {
-            int r = (int) Math.floor(Math.random() * (10) + 1);
-
-            Bola bola = new Bola(r, sharedFile2);
-            threadTabung[i] = new Thread(bola);
-            threadTabung[i].start();
-        }
-
-        SharedFile sharedFile3 = new SharedFile("kerucut.txt");
-        sharedFile3.clearFile();
-        Thread[] threadKerucut = new Thread[334];
-        for (int i = 0; i < threadKerucut.length; i++) {
-            int r = (int) Math.floor(Math.random() * (10) + 1);
-            int t = (int) Math.floor(Math.random() * (15) + 1);
-
-            Kerucut kerucut = new Kerucut(t, r, sharedFile3);
-            threadTabung[i] = new Thread(kerucut);
-            threadTabung[i].start();
-        }
-
-        for (Thread thread : threadTabung) {
-            try {
-                if (thread != null) {
-                    thread.join();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                Tabung tabung = new Tabung(t, r, sharedFile1);
+                threadTabung[i] = new Thread(tabung);
+                threadTabung[i].start();
             }
-        }
-        sharedFile1.close();
 
-        for (Thread thread : threadBola) {
-            try {
-                if (thread != null) {
-                    thread.join();
+            for (Thread thread : threadTabung) {
+                try {
+                    if (thread != null) {
+                        thread.join();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
-        }
-        sharedFile2.close();
+            sharedFile1.close();
+            
+            RandomAccessFile readFile1 = new RandomAccessFile("tabung.txt", "r");
 
-        for (Thread thread : threadKerucut) {
-            try {
-                if (thread != null) {
-                    thread.join();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            while (readFile1.getFilePointer() < readFile1.length()) {
+                double r = readFile1.readDouble();
+                double tinggi = readFile1.readDouble();
+                double luasPermukaan = readFile1.readDouble();
+                double volume = readFile1.readDouble();
+
+                System.out.println("Data Tabung:");
+                System.out.println("Jari-jari: " + r);
+                System.out.println("Tinggi: " + tinggi);
+                System.out.println("Luas Permukaan: " + luasPermukaan);
+                System.out.println("Volume: " + volume);
+                System.out.println();
+                con.inputTabung(r, tinggi, volume, luasPermukaan);
             }
+
+            readFile1.close();
+            
+            
+        } else if (menu == 2) {
+            System.out.println("=== KERUCUT ===");
+            SharedFile sharedFile2 = new SharedFile("kerucut.txt");
+            sharedFile2.clearFile();
+
+            Thread[] threadKerucut = new Thread[1000];
+            for (int i = 0; i < threadKerucut.length; i++) {
+                int r = (int) Math.floor(Math.random() * (10) + 1);
+                int t = (int) Math.floor(Math.random() * (15) + 1);
+
+                Kerucut kerucut = new Kerucut(t, r, sharedFile2);
+                threadKerucut[i] = new Thread(kerucut);
+                threadKerucut[i].start();
+            }
+
+            for (Thread thread : threadKerucut) {
+                try {
+                    if (thread != null) {
+                        thread.join();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            sharedFile2.close();
+            
+            RandomAccessFile readFile2 = new RandomAccessFile("kerucut.txt", "r");
+
+            while (readFile2.getFilePointer() < readFile2.length()) {
+                double r = readFile2.readDouble();
+                double tinggi = readFile2.readDouble();
+                double luasPermukaan = readFile2.readDouble();
+                double volume = readFile2.readDouble();
+
+                System.out.println("Data Kerucut:");
+                System.out.println("Jari-jari: " + r);
+                System.out.println("Tinggi: " + tinggi);
+                System.out.println("Luas Permukaan: " + luasPermukaan);
+                System.out.println("Volume: " + volume);
+                System.out.println();
+                
+                con.inputKerucut(r, tinggi, luasPermukaan, volume);
+            }
+
+            readFile2.close();
+            
+        } else if (menu == 3) {
+            System.out.println("=== BOLA ===");
+            SharedFile sharedFile3 = new SharedFile("bola.txt");
+            sharedFile3.clearFile();
+            Thread[] threadBola = new Thread[1000];
+            for (int i = 0; i < threadBola.length; i++) {
+                int r = (int) Math.floor(Math.random() * (10) + 1);
+
+                Bola bola = new Bola(r, sharedFile3);
+                threadBola[i] = new Thread(bola);
+                threadBola[i].start();
+            }
+
+            for (Thread thread : threadBola) {
+                try {
+                    if (thread != null) {
+                        thread.join();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+            sharedFile3.close();
+            
+            RandomAccessFile readFile3 = new RandomAccessFile("bola.txt", "r");
+
+            while (readFile3.getFilePointer() < readFile3.length()) {
+                double r = readFile3.readDouble();
+                double luasPermukaan = readFile3.readDouble();
+                double volume = readFile3.readDouble();
+
+                System.out.println("Data Bola:");
+                System.out.println("Jari-jari: " + r);
+                System.out.println("Luas Permukaan: " + luasPermukaan);
+                System.out.println("Volume: " + volume);
+                System.out.println();
+                con.inputBola(r, volume, luasPermukaan);
+            }
+
+            readFile3.close();
+        } else {
+            System.out.println("\nMenu Tidak Tersedia !");
         }
-        sharedFile3.close();
+//        
+
+        
 //
 //        for (int i = 0; i < jumlahKerucut; i++) {
 //            int t = (int)Math.floor(Math.random() * (15)+1);
@@ -95,58 +171,9 @@ public class Main {
 //            Thread threadBola = new Thread(bola);
 //            threadBola.start();
 //        }
-        RandomAccessFile readFile = new RandomAccessFile("tabung.txt", "r");
-
-        while (readFile.getFilePointer() < readFile.length()) {
-            double r = readFile.readDouble();
-            double tinggi = readFile.readDouble();
-            double luasPermukaan = readFile.readDouble();
-            double volume = readFile.readDouble();
-
-            System.out.println("Data Tabung:");
-            System.out.println("Jari-jari: " + r);
-            System.out.println("Tinggi: " + tinggi);
-            System.out.println("Luas Permukaan: " + luasPermukaan);
-            System.out.println("Volume: " + volume);
-            System.out.println();
-        }
-
-        readFile.close();
 
         
-        RandomAccessFile readFile2 = new RandomAccessFile("bola.txt", "r");
-
-        while (readFile2.getFilePointer() < readFile2.length()) {
-            double r = readFile2.readDouble();
-            double luasPermukaan = readFile2.readDouble();
-            double volume = readFile2.readDouble();
-
-            System.out.println("Data Bola:");
-            System.out.println("Jari-jari: " + r);
-            System.out.println("Luas Permukaan: " + luasPermukaan);
-            System.out.println("Volume: " + volume);
-            System.out.println();
-        }
-
-        readFile2.close();
         
-        RandomAccessFile readFile3 = new RandomAccessFile("kerucut.txt", "r");
-
-        while (readFile3.getFilePointer() < readFile3.length()) {
-            double r = readFile3.readDouble();
-            double tinggi = readFile3.readDouble();
-            double luasPermukaan = readFile3.readDouble();
-            double volume = readFile3.readDouble();
-
-            System.out.println("Data Kerucut:");
-            System.out.println("Jari-jari: " + r);
-            System.out.println("Tinggi: " + tinggi);
-            System.out.println("Luas Permukaan: " + luasPermukaan);
-            System.out.println("Volume: " + volume);
-            System.out.println();
-        }
-
-        readFile3.close();
 //        Scanner input = new Scanner(System.in);
 //        double r,t;
 //        String ulang;
